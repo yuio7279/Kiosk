@@ -34,8 +34,16 @@ public class Main {
                     addWishlist(selectedProduct);
                 }
                 case 3 -> {
+                    productList = getProductList(3);
+                    answer =selectProduct(productList);
+                    Product selectedProduct = productList.get(answer - 1);
+                    addWishlist(selectedProduct);
                 }
                 case 4 -> {
+                    productList = getProductList(4);
+                    answer =selectProduct(productList);
+                    Product selectedProduct = productList.get(answer - 1);
+                    addWishlist(selectedProduct);
                 }
                 case 5 -> {
                     System.out.println("아래와 같이 주문하시겠습니까?\n");
@@ -105,19 +113,31 @@ public class Main {
     //상품들 가져오기
     public static ArrayList<Product> getProductList(int direction){
         ArrayList<Product> productArrayList = new ArrayList<>();
-        switch (direction){
+        switch (direction) {
             case 1: {
-                productArrayList.add(new Product("ShackBurger   ",6.9,"토마토, 양상추, 쉑소스가 토핑된 치즈버거"));
-                productArrayList.add(new Product("SmokeShack    ",8.9,"베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
-                productArrayList.add(new Product("Shroom Burger ",9.4,"몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거"));
-                productArrayList.add(new Product("Cheeseburger  ",6.9,"포테이토 번과 비프패티, 치즈가 토핑된 치즈버거"));
-                productArrayList.add(new Product("Hamburger     ",5.4,"비프패티를 기반으로 야채가 들어간 기본버거"));
+                productArrayList.add(new Product("ShackBurger   ", 6.9, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"));
+                productArrayList.add(new Product("SmokeShack    ", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
+                productArrayList.add(new Product("Shroom Burger ", 9.4, "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거"));
+                productArrayList.add(new Product("Cheeseburger  ", 6.9, "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거"));
+                productArrayList.add(new Product("Hamburger     ", 5.4, "비프패티를 기반으로 야채가 들어간 기본버거"));
                 return productArrayList;
             }
             case 2: {
-                productArrayList.add(new Product("Shakes             ",5.9,"바닐라, 초콜렛, 솔티드 카라멜, 블랙 & 화이트 스트로베리, 피넛버터, 커피"));
-                productArrayList.add(new Product("Shakes of the week ",6.9,"특별한 커스터드 플레이버"));
-                productArrayList.add(new Product("Red Bean Shake     ",6.9,"신선한 커스타드와 함께 우유와 레드빈이 블렌딩 된 시즈널 쉐이크"));
+                productArrayList.add(new Product("Shakes             ", 5.9, "바닐라, 초콜렛, 솔티드 카라멜, 블랙 & 화이트 스트로베리, 피넛버터, 커피"));
+                productArrayList.add(new Product("Shakes of the week ", 6.9, "특별한 커스터드 플레이버"));
+                productArrayList.add(new Product("Red Bean Shake     ", 6.9, "신선한 커스타드와 함께 우유와 레드빈이 블렌딩 된 시즈널 쉐이크"));
+                return productArrayList;
+            }
+            case 3: {
+                productArrayList.add(new Product("Shack-made Lemonade   ", 3.9, "매장에서 직접 만드는 상큼한 레몬에이드"));
+                productArrayList.add(new Product("Fresh Brewed Iced Tea ", 3.5, "직접 유기농 홍차를 우려낸 아이스티"));
+                productArrayList.add(new Product("Fifty / Fifty         ", 3.4, "레몬에이드와 아이스티의 만남"));
+                return productArrayList;
+            }
+            case 4: {
+                productArrayList.add(new Product("ShackMeister Ale   ", 9.8, "쉐이크쉑 버거를 위해 뉴욕 브루클릭 브루어리에서 특별히 양조한 에일 맥주"));
+                productArrayList.add(new Product("Slow IPA           ", 6.8, "The Hand and Malt"));
+                productArrayList.add(new Product("Blackcurrant Gose  ", 6.8, "Garilla Brewing Co. Busan"));
                 return productArrayList;
             }
         }
