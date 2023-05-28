@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static double total = 0;
 
     static Scanner sc = new Scanner(System.in);
     static Order order = new Order();
@@ -21,26 +22,33 @@ public class Main {
             int answer = selectMenu(menuArrayList);
 
             switch (answer) {
+                case 0 -> {
+                    System.out.println("[ 총 판매금액 현황 ]");
+                    System.out.println("현재까지 총 판매된 금액은 [ W "+total+" ] 입니다.\n");
+                    System.out.println("1.돌아가기");
+                    answer = sc.nextInt();
+                    break;
+                }
                 case 1 -> {
-                    productList = getProductList(1);
+                    productList = getProductList(answer);
                     answer = selectProduct(productList);
                     Product selectedProduct = productList.get(answer - 1);
                     addWishlist(selectedProduct);
                 }
                 case 2 -> {
-                    productList = getProductList(2);
+                    productList = getProductList(answer);
                     answer =selectProduct(productList);
                     Product selectedProduct = productList.get(answer - 1);
                     addWishlist(selectedProduct);
                 }
                 case 3 -> {
-                    productList = getProductList(3);
+                    productList = getProductList(answer);
                     answer =selectProduct(productList);
                     Product selectedProduct = productList.get(answer - 1);
                     addWishlist(selectedProduct);
                 }
                 case 4 -> {
-                    productList = getProductList(4);
+                    productList = getProductList(answer);
                     answer =selectProduct(productList);
                     Product selectedProduct = productList.get(answer - 1);
                     addWishlist(selectedProduct);
@@ -70,8 +78,11 @@ public class Main {
                             System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
                             Thread.sleep(3000);
                         }else{
-
+                        total += sum;
                         System.out.println("주문이 완료되었습니다!\n");
+                        for(Product selledProduct : wishlist){
+                            order.addSelledList(selledProduct);
+                        }
                         order.clear();
                         System.out.println("대기번호는 [ " + (++waiting) + " ] 번 입니다.");
                         System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
@@ -82,9 +93,7 @@ public class Main {
                     System.out.println("진행하던 주문을 취소하시겠습니까?");
                     System.out.println("1. 확인    2.취소");
                     answer = sc.nextInt();
-                    if(answer != 1)
-                        break;
-                    else {order.clear();
+                    if(answer == 1){order.clear();
                         System.out.println("진행하던 주문이 취소되었습니다.\n");}
                 }
             }
@@ -156,7 +165,7 @@ public class Main {
 
         System.out.println("\n[ ORDER MENU ]");
         delay();
-        selectOrder(orderArrayList);
+        getOrder(orderArrayList);
         sc = new Scanner(System.in);
 
         return sc.nextInt();
@@ -164,7 +173,7 @@ public class Main {
 
     //오더 리스트 출력, 선택한 번호 1,2,3,4.. 리턴
     //메뉴 개수 증가하면 그에 따라 번호 맞춤 메뉴가 5개 인 경우, 오더 메뉴 6번 부터 시작
-    public static void selectOrder(ArrayList<Menu> orderArrayList) throws InterruptedException {
+    public static void getOrder(ArrayList<Menu> orderArrayList) throws InterruptedException {
         ArrayList<Menu> menuArrayList = getMenuList();
         for (int i = 0; i < orderArrayList.size(); i++) {
             System.out.println(((menuArrayList.size()+(i+1))+". "+orderArrayList.get(i).toString()));
@@ -194,6 +203,7 @@ public class Main {
         if (answer != 1) {
             System.out.println("취소되었습니다.");
         } else {
+
             order.add(selectedProduct);
             System.out.println(selectedProduct.getName() + " 가 장바구니에 추가되었습니다.");
 
@@ -202,6 +212,6 @@ public class Main {
 
     //천천히 출력되게끔,,
     public static void delay() throws InterruptedException {
-        Thread.sleep(500);
+        Thread.sleep(10);
     }
 }
