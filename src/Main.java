@@ -29,6 +29,17 @@ public class Main {
                     answer = sc.nextInt();
                     break;
                 }
+                case 9 -> {
+                    System.out.println("[ 총 판매상품 목록 현황 ]");
+                    System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
+                    ArrayList<Product>selledList = order.getSelledlist();
+                    for (Product product : selledList) {
+                        System.out.println("- " + product.getName() + " | W " + product.getPrice());
+                    }
+                    System.out.println("1.돌아가기");
+                    answer = sc.nextInt();
+                    break;
+                }
                 case 1 -> {
                     productList = getProductList(answer);
                     answer = selectProduct(productList);
