@@ -17,6 +17,8 @@ public class Main {
             System.out.println("---------------------------------------\n");
             System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
             System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.");
+        try {
+
 
             int answer = selectMenu(menuArrayList);
 
@@ -108,9 +110,15 @@ public class Main {
                     if(answer == 1){order.clear();
                         System.out.println("진행하던 주문이 취소되었습니다.\n");}
                 }
+                default ->{
+                    System.out.println("올바른 입력이 아닙니다.");
+                    Thread.sleep(2000);
+                }
             }
-
-
+        } catch (InputMismatchException e) {
+            System.out.println("올바른 입력이 아닙니다.");
+            Thread.sleep(2000);
+        }
         }
     }
     //메뉴 불러오기
@@ -219,22 +227,19 @@ public class Main {
             for(int i=0; i<order.getWishlist().size(); i++){
                 if (order.getWishlist().get(i).toString().equals(selectedProduct.toString())) {
                     exists = true;
-                    System.out.println("이미 존재.");
                     Product existingProduct = order.getWishlist().get(i);
                     existingProduct.setCnt(existingProduct.getCnt() + 1);
                     System.out.println(existingProduct.getName() + "의 수량이 증가되었습니다.");
                 }
             }
             if(!exists){
-                System.out.println("존재하지 않음.");
                 order.add(selectedProduct);
                 System.out.println(selectedProduct.getName() + " 가 장바구니에 추가되었습니다.");
             }
         }
     }
-
     //천천히 출력되게끔,,
     public static void delay() throws InterruptedException {
-        Thread.sleep(10);
+        Thread.sleep(200);
     }
 }
