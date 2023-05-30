@@ -21,6 +21,10 @@ public class Product extends Menu{
 
     @Override
     public String toString() {
+        return super.getName() +" | "+price+" | "+super.getDesc();
+    }
+    public String toString_cnt() {
         return super.getName() +" | "+price+" | "+cnt+"개 | "+super.getDesc();
     }
+
 }

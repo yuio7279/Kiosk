@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -70,13 +69,15 @@ public class Main {
                     ArrayList<Product> wishlist = order.getWishlist();
 
                     for(Product product : wishlist){
-                        System.out.println(product.toString());
+                        System.out.println(product.toString_cnt());
                     }
+
+
                     System.out.println();
                     System.out.println("[ Total ]");
                     double sum = 0;
                     for(int i=0; i<wishlist.size(); i++){
-                        sum += wishlist.get(i).getPrice();
+                        sum += wishlist.get(i).getPrice() * wishlist.get(i).getCnt();
                     }
                     System.out.printf("W %.1f\n\n",sum);
                     System.out.println("1. 주문    2. 메뉴판");
@@ -204,7 +205,6 @@ public class Main {
     }
 
     //장바구니로 담는 메서드,, 이것도 반복되는 것 같아 함수로 만들었다.
-
     public static void addWishlist(Product selectedProduct){
 
         System.out.println(selectedProduct.toString());
@@ -214,10 +214,22 @@ public class Main {
         if (answer != 1) {
             System.out.println("취소되었습니다.");
         } else {
-
-            order.add(selectedProduct);
-            System.out.println(selectedProduct.getName() + " 가 장바구니에 추가되었습니다.");
-
+            boolean exists = false;
+                //장바구니 내 이미 selectedProduct가 존재하는지 여부
+            for(int i=0; i<order.getWishlist().size(); i++){
+                if (order.getWishlist().get(i).toString().equals(selectedProduct.toString())) {
+                    exists = true;
+                    System.out.println("이미 존재.");
+                    Product existingProduct = order.getWishlist().get(i);
+                    existingProduct.setCnt(existingProduct.getCnt() + 1);
+                    System.out.println(existingProduct.getName() + "의 수량이 증가되었습니다.");
+                }
+            }
+            if(!exists){
+                System.out.println("존재하지 않음.");
+                order.add(selectedProduct);
+                System.out.println(selectedProduct.getName() + " 가 장바구니에 추가되었습니다.");
+            }
         }
     }
 
