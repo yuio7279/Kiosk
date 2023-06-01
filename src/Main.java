@@ -10,6 +10,7 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+
         while(true) {
 
             ArrayList<Menu> menuArrayList = getMenuList();
@@ -18,7 +19,6 @@ public class Main {
             System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
             System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.");
         try {
-
 
             int answer = selectMenu(menuArrayList);
 
@@ -41,29 +41,9 @@ public class Main {
                     answer = sc.nextInt();
                     break;
                 }
-                case 1 -> {
-                    productList = getProductList(answer);
-                    answer = selectProduct(productList);
-                    Product selectedProduct = productList.get(answer - 1);
-                    addWishlist(selectedProduct);
-                }
-                case 2 -> {
-                    productList = getProductList(answer);
-                    answer =selectProduct(productList);
-                    Product selectedProduct = productList.get(answer - 1);
-                    addWishlist(selectedProduct);
-                }
-                case 3 -> {
-                    productList = getProductList(answer);
-                    answer =selectProduct(productList);
-                    Product selectedProduct = productList.get(answer - 1);
-                    addWishlist(selectedProduct);
-                }
-                case 4 -> {
-                    productList = getProductList(answer);
-                    answer =selectProduct(productList);
-                    Product selectedProduct = productList.get(answer - 1);
-                    addWishlist(selectedProduct);
+                case 1, 2, 3, 4 -> {
+                    selectProcess(answer);
+
                 }
                 case 5 -> {
                     System.out.println("아래와 같이 주문하시겠습니까?\n");
@@ -212,6 +192,23 @@ public class Main {
         return sc.nextInt();
     }
 
+    public static Product selectOption(Product selectedProduct) throws InterruptedException {
+
+        System.out.println(selectedProduct.toString());
+        System.out.println("위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
+        double sizeUp = 3.0;
+
+        String selectedName = selectedProduct.getName();
+        double selectedPrice = selectedProduct.getPrice();
+        System.out.println("1. Single(W "+selectedPrice+")        2. SizeUp(W "+(selectedPrice+sizeUp)+")");
+
+        int answer = sc.nextInt();
+        if(answer == 2){
+            selectedProduct.setPrice(selectedPrice+sizeUp);
+            selectedProduct.setName("[Size Up]"+selectedName);
+        }
+        return selectedProduct;
+    }
     //장바구니로 담는 메서드,, 이것도 반복되는 것 같아 함수로 만들었다.
     public static void addWishlist(Product selectedProduct){
 
@@ -237,6 +234,14 @@ public class Main {
                 System.out.println(selectedProduct.getName() + " 가 장바구니에 추가되었습니다.");
             }
         }
+    }
+
+    public static void selectProcess(int answer) throws InterruptedException {
+        ArrayList<Product>productList = getProductList(answer);
+        answer = selectProduct(productList);
+        Product selectedProduct = productList.get(answer - 1);
+        selectOption(selectedProduct);
+        addWishlist(selectedProduct);
     }
     //천천히 출력되게끔,,
     public static void delay() throws InterruptedException {

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Order {
 
-    private final ArrayList<Product> wishlist;
+    private  final ArrayList<Product> wishlist;
     private final ArrayList<Product> selledlist = new ArrayList<>();
 
     public Order() {

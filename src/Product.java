@@ -1,5 +1,5 @@
 public class Product extends Menu{
-    private final double price;
+    private double price;
     private int cnt = 1;
 
     public Product(String name, double price, String desc) {
@@ -9,6 +9,9 @@ public class Product extends Menu{
 
     public double getPrice() {
         return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public int getCnt() {
