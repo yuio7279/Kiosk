@@ -10,95 +10,94 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
-
         while(true) {
 
             ArrayList<Menu> menuArrayList = getMenuList();
             ArrayList<Product> productList;
             System.out.println("---------------------------------------\n");
-            System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
-            System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.");
-        try {
+            System.out.println("SHAKESHACK BURGER 에 오신걸 환영합니다.");
+            System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
+            try {
 
-            int answer = selectMenu(menuArrayList);
+                int answer = selectMenu(menuArrayList);
 
-            switch (answer) {
-                case 0 -> {
-                    System.out.println("[ 총 판매금액 현황 ]");
-                    System.out.println("현재까지 총 판매된 금액은 [ W "+total+" ] 입니다.\n");
-                    System.out.println("1.돌아가기");
-                    answer = sc.nextInt();
-                    break;
-                }
-                case 9 -> {
-                    System.out.println("[ 총 판매상품 목록 현황 ]");
-                    System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
-                    ArrayList<Product>selledList = order.getSelledlist();
-                    for (Product product : selledList) {
-                        System.out.println("- " + product.getName() + " | W " + product.getPrice());
+                switch (answer) {
+                    case 0 -> {
+                        System.out.println("[ 총 판매금액 현황 ]");
+                        System.out.printf("현재까지 총 판매된 금액은 [ W %.1f ] 입니다.\n\n",total);
+                        System.out.println("1.돌아가기");
+                        answer = sc.nextInt();
+                        break;
                     }
-                    System.out.println("1.돌아가기");
-                    answer = sc.nextInt();
-                    break;
-                }
-                case 1, 2, 3, 4 -> {
-                    selectProcess(answer);
-
-                }
-                case 5 -> {
-                    System.out.println("아래와 같이 주문하시겠습니까?\n");
-                    System.out.println("[ Orders ]");
-                    ArrayList<Product> wishlist = order.getWishlist();
-
-                    for(Product product : wishlist){
-                        System.out.println(product.toString_cnt());
-                    }
-
-
-                    System.out.println();
-                    System.out.println("[ Total ]");
-                    double sum = 0;
-                    for(int i=0; i<wishlist.size(); i++){
-                        sum += wishlist.get(i).getPrice() * wishlist.get(i).getCnt();
-                    }
-                    System.out.printf("W %.1f\n\n",sum);
-                    System.out.println("1. 주문    2. 메뉴판");
-
-                    answer = sc.nextInt();
-
-                    if(answer == 1) {
-                        if(order.getWishlist().isEmpty()){
-                            System.out.println("메뉴를 담고 주문해주세요.");
-                            System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
-                            Thread.sleep(3000);
-                        }else{
-                        total += sum;
-                        System.out.println("주문이 완료되었습니다!\n");
-                        for(Product selledProduct : wishlist){
-                            order.addSelledList(selledProduct);
+                    case 9 -> {
+                        System.out.println("[ 총 판매상품 목록 현황 ]");
+                        System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
+                        ArrayList<Product>selledList = order.getSelledlist();
+                        for (Product product : selledList) {
+                            System.out.println("- " + product.getName() + " | W " + product.getPrice());
                         }
-                        order.clear();
-                        System.out.println("대기번호는 [ " + (++waiting) + " ] 번 입니다.");
-                        System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
-                        Thread.sleep(3000);}
+                        System.out.println("1.돌아가기");
+                        answer = sc.nextInt();
+                        break;
+                    }
+                    case 1, 2, 3, 4 -> {
+                        selectProcess(answer);
+
+                    }
+                    case 5 -> {
+                        System.out.println("아래와 같이 주문하시겠습니까?\n");
+                        System.out.println("[ Orders ]");
+                        ArrayList<Product> wishlist = order.getWishlist();
+
+                        for(Product product : wishlist){
+                            System.out.println(product.toString_cnt());
+                        }
+
+
+                        System.out.println();
+                        System.out.println("[ Total ]");
+                        double sum = 0;
+                        for(int i=0; i<wishlist.size(); i++){
+                            sum += wishlist.get(i).getPrice() * wishlist.get(i).getCnt();
+                        }
+                        System.out.printf("W %.1f\n\n",sum);
+                        System.out.println("1. 주문    2. 메뉴판");
+
+                        answer = sc.nextInt();
+
+                        if(answer == 1) {
+                            if(order.getWishlist().isEmpty()){
+                                System.out.println("메뉴를 담고 주문해주세요.");
+                                System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
+                                Thread.sleep(3000);
+                            }else{
+                                total += sum;
+                                System.out.println("주문이 완료되었습니다!\n");
+                                for(Product selledProduct : wishlist){
+                                    order.addSelledList(selledProduct);
+                                }
+                                order.clear();
+                                System.out.println("대기번호는 [ " + (++waiting) + " ] 번 입니다.");
+                                System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
+                                Thread.sleep(3000);}
+                        }
+                    }
+                    case 6 -> {
+                        System.out.println("진행하던 주문을 취소하시겠습니까?");
+                        System.out.println("1. 확인    2.취소");
+                        answer = sc.nextInt();
+                        if(answer == 1){order.clear();
+                            System.out.println("진행하던 주문이 취소되었습니다.\n");}
+                    }
+                    default ->{
+                        System.out.println("올바른 입력이 아닙니다.");
+                        Thread.sleep(2000);
                     }
                 }
-                case 6 -> {
-                    System.out.println("진행하던 주문을 취소하시겠습니까?");
-                    System.out.println("1. 확인    2.취소");
-                    answer = sc.nextInt();
-                    if(answer == 1){order.clear();
-                        System.out.println("진행하던 주문이 취소되었습니다.\n");}
-                }
-                default ->{
-                    System.out.println("올바른 입력이 아닙니다.");
-                    Thread.sleep(2000);
-                }
+            } catch (InputMismatchException e) {
+                System.out.println("올바른 입력이 아닙니다.");
+                Thread.sleep(2000);
             }
-        } catch (InputMismatchException e) {
-            System.out.println("올바른 입력이 아닙니다.");
-            Thread.sleep(2000);
-        }
         }
     }
     //메뉴 불러오기
