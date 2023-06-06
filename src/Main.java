@@ -22,6 +22,11 @@ public class Main {
                 int answer = selectMenu(menuArrayList);
 
                 switch (answer) {
+                    /*kys: 0606 키오스크 관리프로그램*/
+                    case 8 -> {
+                        callKioskManager();
+                    }
+                    /**/
                     case 0 -> {
                         System.out.println("[ 총 판매금액 현황 ]");
                         System.out.printf("현재까지 총 판매된 금액은 [ W %.1f ] 입니다.\n\n",total);
@@ -73,11 +78,25 @@ public class Main {
                             }else{
                                 total += sum;
                                 System.out.println("주문이 완료되었습니다!\n");
+
                                 for(Product selledProduct : wishlist){
                                     order.addSelledList(selledProduct);
                                 }
+                                /*김예성: 주문상품을 하나로 묶어 OrderData객체(주문목록)로 만듬
+                                * orderedDataList를 static으로 사용, 대기목록과 완료목록 둘다 사용할 수 있게끔 하였음
+                                * issue :
+                                *       95번째줄의 new OrderData할때 wishlist가 넘어가질 않습니다.. OrderData생성자 쪽에서 출력해봤을 때 안나옵니다.
+                                *       여기서 출력하는 94번째줄의 wishilist.get(0).getName()는 이상없이 잘나옵니다.,
+                                *       객체를 생성하고 넘기는중에 문제가발생한것같습니다.
+                                * */
+                                waiting++;
+
+                                System.out.println(wishlist.get(0).getName());
+                                OrderData.orderedDataList.add(new OrderData(waiting,wishlist,total,"요청사항메세지입니다.",new Date(),1));
+                                /**/
+
                                 order.clear();
-                                System.out.println("대기번호는 [ " + (++waiting) + " ] 번 입니다.");
+                                System.out.println("대기번호는 [ " + waiting + " ] 번 입니다.");
                                 System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
                                 Thread.sleep(3000);}
                         }
@@ -234,6 +253,48 @@ public class Main {
             }
         }
     }
+
+    /*김예성*/
+    public static void getWaitingList() {
+        System.out.println("현재 대기 주문 목록입니다.");
+        List<OrderData> waitingList = OrderData.orderedDataList;
+        if (waitingList.isEmpty()) {
+            System.out.println("대기 주문 목록이 없습니다.");
+        } else {
+            System.out.println("대기중인 주문 목록을 보여줍니다.");
+
+            for (OrderData waitingData : waitingList) {
+                //대기주문중인(1) OrderData만 출력
+                if(waitingData.getState() == 1){
+                    System.out.println(waitingData);
+                }
+            }
+            System.out.println("완료주문으로 변경하실 대기번호를 입력해주세요");
+            System.out.println("0: 돌아가기");
+            int answer = sc.nextInt();
+            if(answer == 0){
+                callKioskManager();
+            }
+            else{
+                order.complete(answer);
+                System.out.println("상품이 완료주문으로 변경되었습니다.");
+                System.out.println(waitingList.get(answer-1).getState());
+            }
+        }
+    }
+    /*김예성*/
+    public static void callKioskManager(){
+        System.out.println("1. 대기주문 목록 2. 완료주문 목록 3. 상품 생성 4. 상품 삭제");
+        int answer = sc.nextInt();
+        switch (answer){
+            case 1 -> {getWaitingList();break;}
+            case 2 -> {break;}
+            case 3 -> {break;}
+            case 4 -> {break;}
+
+        }
+    }
+
 
     public static void selectProcess(int answer) throws InterruptedException {
         ArrayList<Product>productList = getProductList(answer);
