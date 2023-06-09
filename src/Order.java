@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,11 +31,13 @@ public class Order {
     }
 
     public void complete(int number){
+        OrderData completeOrderData = OrderData.orderedDataList.get(number-1);
         //번호표를 -1해줌
         Main.waiting--;
+
         //상태를 완료주문으로 변경
-        OrderData.orderedDataList.get(number-1).setState(2);
+        completeOrderData.setState(2);
         //완료 주문일시로 갱신
-        OrderData.orderedDataList.get(number-1).setOrderedDate(new Date());
+        completeOrderData.setOrderedDate(new Date());
     }
 }
