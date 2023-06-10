@@ -20,16 +20,16 @@ public class OrderData {
     //요구사항메세지
     String requiredMsg;
     //주문일자 or 완료일자
-    Date orderedDate;
+    LocalDateTime orderedDate;
     //상태 1: 준비중 2: 완료
     int state;
 
-    public OrderData(int waitingNumber, String[] nameList, double totalPrice, String requiredMsg, Date orderedDate, int state) {
+    public OrderData(int waitingNumber, String[] nameList, double totalPrice, String requiredMsg,  int state) {
         this.waitingNumber = waitingNumber;
         this.nameList = nameList;
         this.totalPrice = totalPrice;
         this.requiredMsg = requiredMsg;
-        this.orderedDate = orderedDate;
+        this.orderedDate = LocalDateTime.now();
         this.state = state;
     }
 
@@ -76,17 +76,17 @@ public class OrderData {
         this.requiredMsg = requiredMsg;
     }
 
-    public Date getOrderedDate() {
+    public LocalDateTime getOrderedDate() {
         return orderedDate;
     }
 
-    public void setOrderedDate(Date orderedDate) {
+    public void setOrderedDate(LocalDateTime orderedDate) {
         this.orderedDate = orderedDate;
     }
 
     //여기에서만 쓰이므로 작성
     //state상태를 1이면 중 2이면 완료로 표시
-    public String translateState(int state){
+    public String trancelateState(int state){
         return switch (state) {
             case 1 -> "준비중";
             case 2 -> "완료";
@@ -98,18 +98,17 @@ public class OrderData {
     @Override
     public String toString() {
 
-
         StringBuilder sb = new StringBuilder();
         for(String name : nameList){
             sb.append(name);
         }
 
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return  "\n[주문번호]\t: " + waitingNumber +
                 "\n[주문상품]\t: " + sb +
                 "\n[총 가격]\t: " + totalPrice +
                 "\n[요청사항]\t: '" + requiredMsg + '\'' +
-                "\n[주문일자]\t: " + orderedDate +
-                "\n[현재상태]:\t: " +translateState(state);
+                "\n[주문일자]\t: " + orderedDate.format(formatter) +
+                "\n[현재상태]:\t: " +trancelateState(state);
     }
 }

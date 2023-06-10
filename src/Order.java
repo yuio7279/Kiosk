@@ -38,6 +38,6 @@ public class Order {
         //상태를 완료주문으로 변경
         completeOrderData.setState(2);
         //완료 주문일시로 갱신
-        completeOrderData.setOrderedDate(new Date());
+        completeOrderData.setOrderedDate(LocalDateTime.now());
     }
 }

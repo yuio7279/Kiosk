@@ -5,15 +5,28 @@ public class Main {
     public static double total = 0;
 
     static Scanner sc = new Scanner(System.in);
+
     static Order order = new Order();
+
     static int waiting = 0;
+
+    static Map<String, Menu> menuMap;
+    static ArrayList<Product> burgerArrayList = new ArrayList();
+    static ArrayList<Product> custardArrayList = new ArrayList();
+    static ArrayList<Product> drinkArrayList = new ArrayList();
+    static ArrayList<Product> beerArrayList = new ArrayList();
+    static ArrayList<Product> newProductArrayList = new ArrayList();
+    static KioskManager manager = new KioskManager();
 
 
     public static void main(String[] args) throws InterruptedException {
+        initProductList();
         while(true) {
 
             ArrayList<Menu> menuArrayList = getMenuList();
             ArrayList<Product> productList;
+            System.out.println("---------------------------------------");
+            manager.getCurrentOrderList();
             System.out.println("---------------------------------------\n");
             System.out.println("SHAKESHACK BURGER 에 오신걸 환영합니다.");
             System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n");
@@ -24,7 +37,6 @@ public class Main {
                 switch (answer) {
                     /*kys: 0606 키오스크 관리 프로그램*/
                     case 8 -> {
-                        KioskManager manager = new KioskManager();
                         manager.callManager();
 
                     }
@@ -47,12 +59,12 @@ public class Main {
                         answer = sc.nextInt();
                         break;
                     }
-                    case 1, 2, 3, 4 -> {
+                    case 1, 2, 3, 4, 5-> {
                         selectProcess(answer);
 
                     }
                     //주문화면
-                    case 5 -> {
+                    case 6 -> {
                         System.out.println("아래와 같이 주문하시겠습니까?\n");
                         System.out.println("[ Orders ]");
                         ArrayList<Product> wishlist = order.getWishlist();
@@ -86,15 +98,14 @@ public class Main {
                                     order.addSelledList(selledProduct);
                                 }
                                 /*김예성: 주문상품을 하나로 묶어 OrderData객체(주문목록)로 만듬
-                                * */
+                                 * */
                                 waiting++;
-
 
                                 String[] nameList = new String[wishlist.size()];
                                 for(int i=0; i<wishlist.size(); i++){
                                     nameList[i] = wishlist.get(i).getName();
                                 }
-                                OrderData orderdata = new OrderData(waiting,nameList,total,"요청사항메세지입니다.", new Date(),1);
+                                OrderData orderdata = new OrderData(waiting,nameList,total,requiredMsg,1);
                                 OrderData.orderedDataList.add(orderdata);
                                 /**/
 
@@ -107,7 +118,7 @@ public class Main {
                                 Thread.sleep(3000);}
                         }
                     }
-                    case 6 -> {
+                    case 7 -> {
                         System.out.println("진행하던 주문을 취소하시겠습니까?");
                         System.out.println("1. 확인    2.취소");
                         answer = sc.nextInt();
@@ -144,38 +155,22 @@ public class Main {
     }
 
     //상품들 가져오기
-    public static ArrayList<Product> getProductList(int direction){
-        ArrayList<Product> productArrayList = new ArrayList<>();
-        switch (direction) {
-            case 1: {
-                productArrayList.add(new Product("ShackBurger   ", 6.9, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"));
-                productArrayList.add(new Product("SmokeShack    ", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
-                productArrayList.add(new Product("Shroom Burger ", 9.4, "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거"));
-                productArrayList.add(new Product("Cheeseburger  ", 6.9, "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거"));
-                productArrayList.add(new Product("Hamburger     ", 5.4, "비프패티를 기반으로 야채가 들어간 기본버거"));
-                return productArrayList;
-            }
-            case 2: {
-                productArrayList.add(new Product("Shakes             ", 5.9, "바닐라, 초콜렛, 솔티드 카라멜, 블랙 & 화이트 스트로베리, 피넛버터, 커피"));
-                productArrayList.add(new Product("Shakes of the week ", 6.9, "특별한 커스터드 플레이버"));
-                productArrayList.add(new Product("Red Bean Shake     ", 6.9, "신선한 커스타드와 함께 우유와 레드빈이 블렌딩 된 시즈널 쉐이크"));
-                return productArrayList;
-            }
-            case 3: {
-                productArrayList.add(new Product("Shack-made Lemonade   ", 3.9, "매장에서 직접 만드는 상큼한 레몬에이드"));
-                productArrayList.add(new Product("Fresh Brewed Iced Tea ", 3.5, "직접 유기농 홍차를 우려낸 아이스티"));
-                productArrayList.add(new Product("Fifty / Fifty         ", 3.4, "레몬에이드와 아이스티의 만남"));
-                return productArrayList;
-            }
-            case 4: {
-                productArrayList.add(new Product("ShackMeister Ale   ", 9.8, "쉐이크쉑 버거를 위해 뉴욕 브루클릭 브루어리에서 특별히 양조한 에일 맥주"));
-                productArrayList.add(new Product("Slow IPA           ", 6.8, "The Hand and Malt"));
-                productArrayList.add(new Product("Blackcurrant Gose  ", 6.8, "Garilla Brewing Co. Busan"));
-                return productArrayList;
-            }
-        }
+    public static void initProductList(){
+        burgerArrayList.add(new Product("SmokeShack    ", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
+        burgerArrayList.add(new Product("Shroom Burger ", 9.4, "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거"));
+        burgerArrayList.add(new Product("Cheeseburger  ", 6.9, "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거"));
+        burgerArrayList.add(new Product("Hamburger     ", 5.4, "비프패티를 기반으로 야채가 들어간 기본버거"));
 
-        return productArrayList;
+        custardArrayList.add(new Product("Shakes             ", 5.9, "바닐라, 초콜렛, 솔티드 카라멜, 블랙 & 화이트 스트로베리, 피넛버터, 커피"));
+        custardArrayList.add(new Product("Shakes of the week ", 6.9, "특별한 커스터드 플레이버"));
+        custardArrayList.add(new Product("Red Bean Shake     ", 6.9, "신선한 커스타드와 함께 우유와 레드빈이 블렌딩 된 시즈널 쉐이크"));
+
+        drinkArrayList.add(new Product("Shack-made Lemonade   ", 3.9, "매장에서 직접 만드는 상큼한 레몬에이드"));
+        drinkArrayList.add(new Product("Fresh Brewed Iced Tea ", 3.5, "직접 유기농 홍차를 우려낸 아이스티"));
+        drinkArrayList.add(new Product("Fifty / Fifty         ", 3.4, "레몬에이드와 아이스티의 만남"));
+
+        beerArrayList.add(new Product("ShackMeister Ale   ", 9.8, "쉐이크쉑 버거를 위해 뉴욕 브루클릭 브루어리에서 특별히 양조한 에일 맥주"));
+        beerArrayList.add(new Product("Blackcurrant Gose  ", 6.8, "Garilla Brewing Co. Busan"));
     }
 
     //메뉴 리스트 출력, 선택한 번호 1,2,3,4.. 리턴
@@ -200,7 +195,7 @@ public class Main {
     public static void getOrder(ArrayList<Menu> orderArrayList) throws InterruptedException {
         ArrayList<Menu> menuArrayList = getMenuList();
         for (int i = 0; i < orderArrayList.size(); i++) {
-            System.out.println(((menuArrayList.size()+(i+1))+". "+orderArrayList.get(i).toString()));
+            System.out.println(((menuArrayList.size()+(i+2))+". "+orderArrayList.get(i).toString()));
             delay();
         }
     }
@@ -234,6 +229,7 @@ public class Main {
         return selectedProduct;
     }
     //장바구니로 담는 메서드,, 이것도 반복되는 것 같아 함수로 만들었다.
+    static String requiredMsg;
     public static void addWishlist(Product selectedProduct){
 
         System.out.println(selectedProduct.toString());
@@ -243,8 +239,9 @@ public class Main {
         if (answer != 1) {
             System.out.println("취소되었습니다.");
         } else {
+            requiredMsg = requestMessage(answer);
             boolean exists = false;
-                //장바구니 내 이미 selectedProduct가 존재하는지 여부
+            //장바구니 내 이미 selectedProduct가 존재하는지 여부
             for(int i=0; i<order.getWishlist().size(); i++){
                 if (order.getWishlist().get(i).toString().equals(selectedProduct.toString())) {
                     exists = true;
@@ -259,16 +256,21 @@ public class Main {
             }
         }
     }
-
-    /*김예성*/
-
-    /*김예성*/
-
-
-
     public static void selectProcess(int answer) throws InterruptedException {
+        ArrayList<Product> productList = new ArrayList<>();
 
-        ArrayList<Product>productList = getProductList(answer);
+        if (answer == 1) {
+            productList = burgerArrayList;
+        } else if (answer == 2) {
+            productList = custardArrayList;
+        } else if (answer == 3) {
+            productList = drinkArrayList;
+        } else if (answer == 4) {
+            productList = beerArrayList;
+        } else if (answer == 5) {
+            productList = newProductArrayList;
+        }
+
         answer = selectProduct(productList);
         Product selectedProduct = productList.get(answer - 1);
         selectOption(selectedProduct);
@@ -276,6 +278,24 @@ public class Main {
     }
     //천천히 출력되게끔,,
     public static void delay() throws InterruptedException {
-        Thread.sleep(200);
+        Thread.sleep(0);
+    }
+    public static String requestMessage(int answer){
+        if (answer == 1){
+            System.out.println("추가요청사항이 있다면 입력해주세요(20자 이내 작성, 없을시 엔터)");
+            Scanner sc = new Scanner(System.in);
+            String requestMessage = sc.nextLine();
+            if(requestMessage.length()>20) {
+                System.out.println("입력가능한 글자를 초과하였습니다. 다시 입력해주시길 바랍니다.");
+                requestMessage(answer);
+            }else if (requestMessage.equals("")){
+                return "";
+            }else{
+                System.out.println("추가요청사항 : " + requestMessage);
+                System.out.println("확인했습니다. 감사합니다.");
+                return requestMessage;
+            }
+        }
+        return "";
     }
 }
